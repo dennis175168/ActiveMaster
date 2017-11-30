@@ -44,6 +44,7 @@ class Point extends Component {
     this.show_change = this.show_change.bind(this);
     this.show_gifts = this.show_gifts.bind(this);
     this.show_student = this.show_student.bind(this);
+    this.show_all = this.show_all.bind(this);
   }
 
 
@@ -73,21 +74,28 @@ class Point extends Component {
     this.setState({
       student:'block',
       gifts:'none',
-      change:'none,'
+      change:'none'
     })
   }
   show_gifts(){
     this.setState({
       student:'none',
       gifts:'block',
-      change:'none,'
+      change:'none'
     })
   }
   show_change(){
     this.setState({
       student:'none',
       gifts:'none',
-      change:'block,'
+      change:'block'
+    })
+  }
+  show_all(){
+    this.setState({
+      student:'block',
+      gifts:'block',
+      change:'block'
     })
   }
 
@@ -138,6 +146,7 @@ class Point extends Component {
            <Well>
            <div >
               <ButtonGroup  style={{width:'100%'}}>
+                <Button onClick={ this.show_all} bsStyle="success" >ALL</Button>
                 <Button onClick={ this.show_student} bsStyle="success" >學生積點</Button>
                 <Button onClick={ this.show_gifts}bsStyle="success" >積點禮物</Button>
                 <Button onClick={ this.show_change} bsStyle="success" >兌換禮物</Button>
@@ -172,6 +181,26 @@ class Point extends Component {
 
             <Well style={{display:this.state.gifts}}>
             <Panel header="基點禮物" bsStyle="primary">
+            <Panel collapsible defaultExpanded header="新增禮物">
+                
+                
+            <ListGroup fill>
+                <ListGroup>
+                  <ListGroupItem>
+                    <label style={{width:'10%'}}>輸入禮物名稱: </label>
+                    <input type="text" /><br/>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <label style={{width:'10%'}}>輸入禮物點數: </label>
+                    <input type="text" /><br/>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <label>選擇禮物圖片: </label>
+                    <input type="file"/>
+                  </ListGroupItem>
+                </ListGroup>
+            </ListGroup>
+            </Panel>
               <Row className="show-grid">
 
               {this.state.data.map(function (object, i) {
@@ -181,7 +210,7 @@ class Point extends Component {
 
                       <ListGroup fill>
                         <ListGroupItem>
-                          <div>需要點數:<input type="text" value={object.gift_coin}/></div>
+                          <div style={{width:'5%'}}>點數:<input type="text" value={object.gift_coin}/></div><br/>
                           <Button bsStyle="primary" style={{width:'100%'}}>update</Button>
                         </ListGroupItem>
                         <ListGroupItem><Button bsStyle="danger" style={{width:'100%'}}>delete</Button></ListGroupItem>
@@ -189,8 +218,7 @@ class Point extends Component {
                     </Panel>
                   </Col> ;
               })}
-{/* 
-<Col xs={6} md={4}>
+                  {/* <Col xs={6} md={4}>
                     <Panel collapsible defaultExpanded header={this.state.data[0].gift_name}>
                       <img style={{width:'100%'}} src={this.state.data[0].gift_pic}/>
 

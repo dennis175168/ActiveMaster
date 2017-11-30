@@ -1,7 +1,26 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { HashRouter } from 'react-router-dom'
-import { Button, Table } from 'react-bootstrap';
+import {
+  Button,
+  Table,
+  Well,
+  ButtonGroup,
+  Glyphicon,
+  Image,
+  Nav,
+  NavItem,
+  Tab,
+  Collapse,
+  Modal,
+  Popover,
+  Tooltip,
+  OverlayTrigger,
+  Tabs,
+  ListGroup,
+  ListGroupItem,
+  Panel
+} from 'react-bootstrap';
 import Login from './login';
 
 
@@ -33,8 +52,18 @@ class Home extends Component {
       return (
         <div>
           { log == 1  ?
+            <div>
+            <Well>
+              <h2>Home</h2>
+            </Well>
+            <Well>
+            <ListGroup>
+              <ListGroupItem>歡迎使用 ActiveMaster 後臺系統 </ListGroupItem>
+            </ListGroup>
+              
+            </Well>
+            </div>
             
-            <h2>Home</h2>
             :
             
             <h2>error</h2>
