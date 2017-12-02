@@ -53,10 +53,10 @@ class Header extends Component {
     }
 
     b(){
-        this.setState({bt_hover:'#2A3542'});
+        this.setState({bt_hover:'#4682B4'});
     }
     b1(){
-        this.setState({bt_hover:'#FFFFFF'});
+        this.setState({bt_hover:'FFFFFF#'});
     }
 
    render() {
@@ -102,6 +102,7 @@ class Header extends Component {
                             <NavItem href="/#/proof" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-book" /> 通識認證</strong></NavItem>
                             <NavItem href="/#/account" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-user" /> 帳號管理</strong></NavItem>
                             <NavItem href="/#/beacon" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-record" /> Beacon Device</strong></NavItem>
+                            <NavItem href="/#/beacon" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-record" /> 網站管理</strong></NavItem>
                             <Link to="/login"><Button bsStyle="danger" style={{width:'80%', margin:'10%'}} onClick={this.logout}>Log out{sessionStorage.getItem('status')}</Button></Link>
                         
 
@@ -113,7 +114,7 @@ class Header extends Component {
                         <Link to="/login"><Button bsStyle="danger" style={{width:'100%'}} onClick={this.logout}>Log out</Button></Link> */}
                         </Nav>
                         :
-                        <Link  to="/login"><Button  bsStyle="success" style={{width:'100%', width:'80%', margin:'10%'}}>Login123{sessionStorage.getItem('status')}</Button></Link>
+                        <Link  to="/login"><Button  bsStyle="success" style={{width:'100%', width:'80%', margin:'10%'}}>Login{sessionStorage.getItem('status')}</Button></Link>
                     }
                     {/* <Link to="/"><Button style={{width:'100%'}}>Home</Button></Link>
                     <Link to="/login"><Button style={{width:'100%'}}>Login</Button></Link>

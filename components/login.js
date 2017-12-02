@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Table, Well, ButtonGroup, Glyphicon, Image, Nav, NavItem,Tab} from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route, Link ,Form, FormGroup, Col ,Checkbox ,ControlLabel ,FormControl } from 'react-router-dom';
+import {SqlApi_url} from '../config';
+var passwordHash = require('password-hash');
+
 
 class Login extends Component {
     constructor(props) {
@@ -25,33 +28,53 @@ class Login extends Component {
     }
 
     check_members(){
+        var user = document.getElementById('usr').value;
+        var pwd = document.getElementById('pwd').value;
+
         const data = new FormData();
-        data.append('sql',"select * from member where mb_mail = 'qq@123'")
+        data.append('sql',"select * from admin where admin_name = '"+user+"'" )
     
-        fetch('http://127.0.0.1/ajax/venus.php', {
+        fetch(SqlApi_url, {
             method:'post',
             body:data,
         })
         .then((res) => {
             return res.json();
         }).catch((e)=>{
-            console.log(e);})
+            console.log(e);
+            alert(user);})
         .then((res) => {
             this.setState({user: res});
-            if(res.length>0){
+            var check = passwordHash.verify(pwd , res[0].admin_pwd);
+            if(res.length>0 && check == true){
                 localStorage.setItem("status", '1');
+                window.location.replace('/#');
+                location.reload();
+            }else{
+                //window.location.replace(...)
+                console.log(check);
             }
             
         }).catch((e)=>{
             console.log(e);
+            alert(user);
         });
-        location.reload();
+        //
     }
 
     logout(){
         localStorage.clear();
         alert('logout');
     }
+
+    // hash(){
+        
+        
+    //     //var hashedPassword = 'sha1$8aa3cbf5$1$f31ca9539be277a7da35568ac6a1e778cbb6a1c2';//passwordHash.generate('1234');
+    //     var hashedPassword = passwordHash.generate('1234');
+    //     //alert(passwordHash.verify('222', hashedPassword));
+    //     alert(hashedPassword);
+    // }
     
 
    render() {
@@ -59,13 +82,15 @@ class Login extends Component {
          <div>
             <h2>Login</h2>
             <div className="form-group">
-            <input  type="text"/>
+                <label for="usr">username:</label>
+                <input type="text" className="form-control" id="usr"/>
             </div>
             <div className="form-group">
-            <input  type="password"/>
+                <label for="usr">password:</label>
+                <input type="password" className="form-control" id="pwd"/>
             </div>
-            <button type="submit" className="btn btn-default">Submit</button>
-            <Link to="/#"><Button onClick={this.check_members}>login</Button></Link>
+            <Button onClick={this.check_members}>login</Button>
+             {/* <Button onClick={this.hash}>123</Button>  */}
             {/* <a href="#/login"><Button onClick={this.logout}>logout</Button></a> */}
 
             

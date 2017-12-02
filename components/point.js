@@ -181,18 +181,18 @@ class Point extends Component {
 
             <Well style={{display:this.state.gifts}}>
             <Panel header="基點禮物" bsStyle="primary">
-            <Panel collapsible defaultExpanded header="新增禮物">
+            <Panel fill collapsible defaultExpanded ={false} header="新增禮物">
                 
                 
             <ListGroup fill>
                 <ListGroup>
                   <ListGroupItem>
                     <label style={{width:'10%'}}>輸入禮物名稱: </label>
-                    <input type="text" /><br/>
+                    <input type="text"  className="form-control" id="usr"/>
                   </ListGroupItem>
                   <ListGroupItem>
                     <label style={{width:'10%'}}>輸入禮物點數: </label>
-                    <input type="text" /><br/>
+                    <input type="text"  className="form-control" id="usr"/>
                   </ListGroupItem>
                   <ListGroupItem>
                     <label>選擇禮物圖片: </label>
@@ -210,7 +210,10 @@ class Point extends Component {
 
                       <ListGroup fill>
                         <ListGroupItem>
-                          <div style={{width:'5%'}}>點數:<input type="text" value={object.gift_coin}/></div><br/>
+                        <div className="form-group">
+                            <label for="usr">點數:</label>
+                            <input type="text" value={object.gift_coin} className="form-control" id="usr"/>
+                        </div>
                           <Button bsStyle="primary" style={{width:'100%'}}>update</Button>
                         </ListGroupItem>
                         <ListGroupItem><Button bsStyle="danger" style={{width:'100%'}}>delete</Button></ListGroupItem>
