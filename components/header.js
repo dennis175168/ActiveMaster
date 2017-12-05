@@ -13,6 +13,9 @@ import Beacon from './beacon';
 import Proof from './proof';
 import Account from './account';
 import Auth from './Auth';
+import WebControll from './webcontroll';
+import Pictures from './pictures';
+import PictureControll from './picture_controll';
 
 
 
@@ -56,7 +59,7 @@ class Header extends Component {
         this.setState({bt_hover:'#4682B4'});
     }
     b1(){
-        this.setState({bt_hover:'FFFFFF#'});
+        this.setState({bt_hover:'#FFFFFF'});
     }
 
    render() {
@@ -70,7 +73,7 @@ class Header extends Component {
 
 
         <div style={{alignContent:'center'}}>
-            <Navbar  style={{position:'fixed', marginBottom:'0px',  width:'100%'}}>
+            <Navbar  style={{position:'fixed', marginBottom:'0px',  width:'100%', zIndex:'5'}}>
                 <Navbar.Header>
                 <Button style={{marginTop:'10px'}} onClick={this.aa}><Glyphicon glyph="	glyphicon glyphicon-th-list" /></Button>
                 {/* <Navbar.Brand>
@@ -93,16 +96,17 @@ class Header extends Component {
             <div style={{display: this.state.show ? 'block' : 'none' }} >
             <Well className="aa" style={{position:'fixed',top:'50px',width:'10%',float:'left',marginTop:'30ox', margin:'0px',padding:'0px', justifyContent: 'center', backgroundColor:'#2A3542', height:height}}>
                 <Image src="img/1024px-CYCU.svg.png" style={{width:'50%', margin:'30px', marginLeft:'25%', marginRight:'25%'}}/> 
-                <h4 style={{color:'white',marginRight:'20px', marginLeft:'20px'}}>Active Master</h4>
+                <h4 style={{color:'white',marginRight:'20px', marginLeft:'20px'}}>Mr. Event</h4>
                     { log == 1 ? 
                         <Nav style={{paddingTop:"20px"}}>
-                            <NavItem href="/" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-home" /> Home</strong></NavItem>
-                            <NavItem href="/#/active" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-th" /> 活動管理</strong></NavItem>
-                            <NavItem href="/#/point" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-copyright-mark" /> 積點管理</strong></NavItem>
-                            <NavItem href="/#/proof" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-book" /> 通識認證</strong></NavItem>
-                            <NavItem href="/#/account" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-user" /> 帳號管理</strong></NavItem>
-                            <NavItem href="/#/beacon" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-record" /> Beacon Device</strong></NavItem>
-                            <NavItem href="/#/beacon" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-record" /> 網站管理</strong></NavItem>
+                            <NavItem href="/" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-home" /> &nbsp;&nbsp;Home</strong></NavItem>
+                            <NavItem href="/#/active" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-th" /> &nbsp;&nbsp;活動管理</strong></NavItem>
+                            <NavItem href="/#/point" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-copyright-mark" /> &nbsp;&nbsp;積點管理</strong></NavItem>
+                            <NavItem href="/#/proof" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-book" /> &nbsp;&nbsp;通識認證</strong></NavItem>
+                            <NavItem href="/#/webcontroll" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-pencil" /> &nbsp;&nbsp;網站管理</strong></NavItem>
+                            <NavItem href="/#/pictures" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-picture" /> &nbsp;&nbsp;系統圖片</strong></NavItem>
+                            <NavItem href="/#/account" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-user" /> &nbsp;&nbsp;帳號管理</strong></NavItem>
+                            <NavItem href="/#/beacon" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-record" /> &nbsp;&nbsp;Beacon Device</strong></NavItem>
                             <Link to="/login"><Button bsStyle="danger" style={{width:'80%', margin:'10%'}} onClick={this.logout}>Log out{sessionStorage.getItem('status')}</Button></Link>
                         
 
@@ -141,6 +145,8 @@ class Header extends Component {
                     <Route path="/proof/:id" component={Proof}/>
                     <Route path="/account" component={Account}/>
                     <Route path="/beacon" component={Beacon}/>
+                    <Route path="/webcontroll" component={WebControll}/>
+                    <Route path="/pictures" component={PictureControll}/>
                 </Switch>
              
             </div>

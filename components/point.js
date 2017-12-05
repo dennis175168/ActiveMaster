@@ -22,8 +22,11 @@ import {
   Panel,
   Col,
   Row,
+  Grid,
+  Label
 } from 'react-bootstrap';
 import {SqlApi_url} from '../config';
+import Pictures from './pictures';
 
 
 class Point extends Component {
@@ -35,12 +38,27 @@ class Point extends Component {
             mb_id:'123',
             mb_name:'456'
         }],
+        students:[{
+          stu_id:'123',
+          stu_num:'456',
+          stu_name:'456',
+          stu_point:'456',
+        }],
+        student_of_gift:[{
+          stu_name:'',
+          stu_point:'',
+          gift_name:''
+        }],
         change: 'block',
         student: 'block',
         gifts: 'block',
     };
     this.insert = this.insert.bind(this); //傳遞子物件
     this.get_data = this.get_data.bind(this);
+    this.get_student = this.get_student.bind(this);
+    this.get_student_gift = this.get_student_gift.bind(this);
+
+    this.update = this.update.bind(this);
     this.show_change = this.show_change.bind(this);
     this.show_gifts = this.show_gifts.bind(this);
     this.show_student = this.show_student.bind(this);
@@ -52,6 +70,7 @@ class Point extends Component {
   componentWillMount(){
     //alert('123');
     this.get_data();
+    this.get_student();
   }
 
   get_data(){
@@ -67,6 +86,40 @@ class Point extends Component {
     })
     .then((res) => {
         this.setState({data: res});
+    });
+  }
+
+  get_student(){
+    const data = new FormData();
+    data.append('sql','select * from student')
+
+    fetch(SqlApi_url, {
+        method:'post',
+        body:data,
+    })
+    .then((res) => {
+        return res.json();
+    })
+    .then((res) => {
+        this.setState({students: res});
+    });
+  }
+
+  get_student_gift(){
+    var i = document.getElementById('insert_stu_num').value;
+    alert(i);
+    const data = new FormData();
+    data.append('sql','select * from student , gift_box ,gift where student.stu_id = gift_box.stu_id and gift.gift_id = gift_box.gift_id and stu_num ='+i)
+
+    fetch(SqlApi_url, {
+        method:'post',
+        body:data,
+    })
+    .then((res) => {
+        return res.json();
+    })
+    .then((res) => {
+        this.setState({student_of_gift: res});
     });
   }
 
@@ -99,6 +152,32 @@ class Point extends Component {
     })
   }
 
+  exchange_gift(i){
+    alert(i);
+    this.update("UPDATE gift_box SET used = 'T' WHERE gift_box_id ="+i);
+  }
+
+  update(i) {
+    const data = new FormData();
+    data.append('sql', i);
+
+    fetch(SqlApi_url, {
+      method: 'post',
+      body: data
+    }).then((res) => {
+      //return res.json();
+    }).catch((e) => {
+      console.log(e);
+    }).then((res) => {
+      //this.setState({data: res});
+      this.get_data();
+    }).catch((e) => {
+      console.log(e);
+    });
+
+    this.get_data();
+  }
+
   insert(){
     const data = new FormData();
     data.append('sql',"INSERT INTO member (mb_name , mb_mail ) VALUES ('allen', 'allen.chen@msseed.idv.tw')");
@@ -125,8 +204,42 @@ class Point extends Component {
 
   }
 
+  delete_gift(i){
+    var r = confirm("確定刪除");
+    if (r == true) {
+        this.delete(i);
+    } else {
+        alert('Cancel the delete');
+    }
+  }
+
+  delete(i){
+    alert('delete');
+    var _id = i;
+    var qq =  "DELETE FROM gift WHERE gift_id="+_id;
+    const data = new FormData();
+    data.append('sql', qq);
+
+    fetch(SqlApi_url, {
+        method:'post',
+        body:data,
+    })
+    .then((res) => {
+        //return res.json();
+    }).catch((e)=>{
+      console.log(e);
+    })
+    .then((res) => {
+        //this.setState({data: res});
+        this.get_data();
+    }).catch((e)=>{
+      console.log(e);
+    });
+}
+
 
    render() {
+     var l =this;
      //this.aa();
      const info = this.state.data;
      const row = [];
@@ -144,6 +257,9 @@ class Point extends Component {
         
          <div>
            <Well>
+           
+              
+          
            <div >
               <ButtonGroup  style={{width:'100%'}}>
                 <Button onClick={ this.show_all} bsStyle="success" >ALL</Button>
@@ -169,74 +285,144 @@ class Point extends Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>10344129</td>
-                  <td>66666</td>
-                </tr>
+                  {this.state.students.map(function(object, i){
+                    return (
+                      <tr>
+                        <td>{object.stu_id}</td>
+                        <td>{object.stu_name}</td>
+                        <td>{object.stu_point}</td>
+                      </tr>  
+                    );
+                  })}
+                  
               </tbody>
             </Table>
             </Panel>
             </Well>
 
             <Well style={{display:this.state.gifts}}>
-            <Panel header="基點禮物" bsStyle="primary">
-            <Panel fill collapsible defaultExpanded ={false} header="新增禮物">
-                
-                
-            <ListGroup fill>
-                <ListGroup>
-                  <ListGroupItem>
-                    <label style={{width:'10%'}}>輸入禮物名稱: </label>
-                    <input type="text"  className="form-control" id="usr"/>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    <label style={{width:'10%'}}>輸入禮物點數: </label>
-                    <input type="text"  className="form-control" id="usr"/>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    <label>選擇禮物圖片: </label>
-                    <input type="file"/>
-                  </ListGroupItem>
-                </ListGroup>
-            </ListGroup>
-            </Panel>
-              <Row className="show-grid">
+              <Panel header="基點禮物" bsStyle="primary">
+              <Panel fill collapsible defaultExpanded ={false} header="新增禮物">
+                  
+                  
+              <ListGroup fill>
+                  <ListGroup>
+                  <Pictures/>
+                    {/* <ListGroupItem>
+                      <label style={{width:'10%'}}>輸入禮物名稱: </label>
+                      <input type="text"  className="form-control" id="usr"/>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      <label style={{width:'10%'}}>輸入禮物點數: </label>
+                      <input type="text"  className="form-control" id="usr"/>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      <label>選擇禮物圖片: </label>
+                      <div><Pictures/></div>
+                    </ListGroupItem> */}
+                  </ListGroup>
+              </ListGroup>
 
-              {this.state.data.map(function (object, i) {
-                    return <Col xs={6} md={3}>
-                    <Panel collapsible defaultExpanded header={object.gift_name}>
-                      <img style={{width:'100%'}} src={object.gift_pic}/>
+              </Panel>
+                <Row className="show-grid">
 
-                      <ListGroup fill>
-                        <ListGroupItem>
-                        <div className="form-group">
-                            <label for="usr">點數:</label>
-                            <input type="text" value={object.gift_coin} className="form-control" id="usr"/>
-                        </div>
-                          <Button bsStyle="primary" style={{width:'100%'}}>update</Button>
-                        </ListGroupItem>
-                        <ListGroupItem><Button bsStyle="danger" style={{width:'100%'}}>delete</Button></ListGroupItem>
-                      </ListGroup>
-                    </Panel>
-                  </Col> ;
-              })}
-                  {/* <Col xs={6} md={4}>
-                    <Panel collapsible defaultExpanded header={this.state.data[0].gift_name}>
-                      <img style={{width:'100%'}} src={this.state.data[0].gift_pic}/>
+                {this.state.data.map(function (object, i) {
+                      return <Col xs={6} md={3}>
+                      <Panel  header={object.gift_name}>
+                      <div style={{height:'300px'}} ><img style={{width:'80%', marginLeft:'10%', marginRight:'10%'}} src={object.gift_pic}/></div>
+                        
 
-                      <ListGroup fill>
-                        <ListGroupItem><input type="text" value={this.state.data[0].gift_coin}/><Button bsStyle="primary">update</Button></ListGroupItem>
-                        <ListGroupItem><Button bsStyle="danger">delete</Button></ListGroupItem>
-                      </ListGroup>
-                    </Panel>
-                  </Col>  */}
-              </Row>
-            </Panel>
+                        <ListGroup fill>
+                          <ListGroupItem>
+                          <div className="form-group">
+                              <label for="usr">點數:</label>
+                              <input type="text" value={object.gift_coin} className="form-control" id="usr"/>
+                          </div>
+                            <Button bsStyle="primary" style={{width:'40%',margin:'5%'}}>update</Button>
+                            <Button onClick={()=>l.delete_gift(object.gift_id)} bsStyle="danger" style={{width:'40%' ,margin:'5%'}}>delete</Button>
+                          </ListGroupItem>
+                        </ListGroup>
+                      </Panel>
+                    </Col> ;
+                })}
+                    {/* <Col xs={6} md={4}>
+                      <Panel collapsible defaultExpanded header={this.state.data[0].gift_name}>
+                        <img style={{width:'100%'}} src={this.state.data[0].gift_pic}/>
+
+                        <ListGroup fill>
+                          <ListGroupItem><input type="text" value={this.state.data[0].gift_coin}/><Button bsStyle="primary">update</Button></ListGroupItem>
+                          <ListGroupItem><Button bsStyle="danger">delete</Button></ListGroupItem>
+                        </ListGroup>
+                      </Panel>
+                    </Col>  */}
+                </Row>
+              </Panel>
             </Well>
 
             <Well style={{display:this.state.change}}>
             <Panel header="兌換禮物" bsStyle="primary">
+            <Panel fill collapsible defaultExpanded ={false} header="學號查詢">
+              <ListGroup fill>
+                  <ListGroup>
+                    <ListGroupItem>
+                      <div className="form-group">
+                        <label style={{width:'10%'}}>輸入學生學號: </label>
+                        <input type="text"  className="form-control" id="insert_stu_num"/>
+                      </div>
+                      <Button onClick={this.get_student_gift}>查詢</Button>
+                    </ListGroupItem>
+                  </ListGroup>
+              </ListGroup>
+            </Panel>
+            <Panel fill collapsible defaultExpanded ={false} header="QRcode查詢">
+              <ListGroup fill>
+                    <ListGroupItem>
+                      <div className="form-group">
+                        <label style={{width:'10%'}}>輸入學生學號: </label>
+                        <input type="text"  className="form-control" id="usr"/>
+                      </div>
+                      <Button>查詢</Button>
+                    </ListGroupItem>
+              </ListGroup>
+            </Panel>
+
+            <Panel fill collapsible defaultExpanded ={true} header="可兌換禮物">
+              <ListGroup fill>
+                <ListGroupItem>
+                <Row className="show-grid">
+                       {
+                        this.state.student_of_gift[0].stu_name == '' ?
+                        <Label>尚無資料</Label>
+                        :
+                        this.state.student_of_gift.map(function(object, i){
+                          return(
+                            
+                            <Col xs={6} md={3}>
+                              <Panel header={object.gift_name}>
+                              <div style={{height:'300px'}} ><img style={{width:'80%', marginLeft:'10%', marginRight:'10%'}} src={object.gift_pic}/></div>
+                                <ListGroup fill>
+                                  <ListGroupItem>
+                                  <div className="form-group">
+                                      <label for="usr">點數:{object.gift_coin}</label>
+                                  </div>
+                                  {object.used == 'T' ?
+                                    <Button bsStyle="warning" disabled style={{width:'100%'}}>已使用</Button>
+                                  :
+                                    <Button bsStyle="primary"  onClick={()=>l.exchange_gift(object.gift_box_id)} style={{width:'100%'}}>兌換</Button>
+                                  }
+                                    {/* <Button bsStyle="primary" onClick={()=>l.exchange_gift(object.gift_box_id)} style={{width:'100%'}}>兌換</Button> */}
+                                  </ListGroupItem>
+                                </ListGroup>
+                              </Panel>
+                            </Col> 
+                            
+                          );
+                        })
+                      } 
+                </Row>
+                </ListGroupItem>
+              </ListGroup>
+            </Panel>
             </Panel>
             </Well>
             

@@ -21,6 +21,7 @@ import {
   Panel,
   Col,
   Row,
+  Grid,
 } from 'react-bootstrap';
 import {SqlApi_url} from '../config';
 import Proof from './proof';
@@ -51,6 +52,9 @@ class Active extends Component {
     this.detail = this.detail.bind(this);
     this.all = this.all.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.hito = this.hito.bind(this);
+    this.cancel_hito = this.cancel_hito.bind(this);
+    this.update = this.update.bind(this);
   }
 
   componentWillMount() {
@@ -130,6 +134,47 @@ class Active extends Component {
     });
   }
 
+  hito(){
+    for(var j=0; j<=this.state.data.length-1;j++){
+      const sta = document.getElementById(j).checked;
+      if(sta == true){
+        console.log(this.state.data[j].active_id+": 有按過");
+
+        this.update("UPDATE active SET hot='T' WHERE active_id ="+this.state.data[j].active_id);
+        this.get_data();
+      }else{
+        console.log(this.state.data[j].active_name+": 沒按過");
+      }
+      
+    }
+  }
+
+  cancel_hito(i){
+    this.update("UPDATE active SET hot='F' WHERE active_id ="+i);
+    this.get_data();
+  }
+
+  update(i) {
+    const data = new FormData();
+    data.append('sql', i);
+
+    fetch(SqlApi_url, {
+      method: 'post',
+      body: data
+    }).then((res) => {
+      //return res.json();
+    }).catch((e) => {
+      console.log(e);
+    }).then((res) => {
+      //this.setState({data: res});
+      this.get_data();
+    }).catch((e) => {
+      console.log(e);
+    });
+
+    this.get_data();
+  }
+
   detail(i) {
     //alert(i);
     this.setState({detail: i, showModal: 'block', showdata: 'none'})
@@ -149,6 +194,39 @@ class Active extends Component {
   all() {
     this.setState({showModal: 'none', showdata: 'block'})
   }
+
+  update_detail(col, html_id ,i){
+    var con = document.getElementById(html_id).value;
+    if(con ==null || con == ""){
+      alert('請輸入內容');
+    }else{
+      //alert("UPDATE active SET "+col+" = '"+con+"' WHERE active_id ="+i);
+      this.update("UPDATE active SET "+col+" = '"+con+"' WHERE active_id ="+i);
+    }
+    
+  }
+
+  update(i) {
+    const data = new FormData();
+    data.append('sql', i);
+
+    fetch(SqlApi_url, {
+      method: 'post',
+      body: data
+    }).then((res) => {
+      //return res.json();
+    }).catch((e) => {
+      console.log(e);
+    }).then((res) => {
+      //this.setState({data: res});
+      this.get_data();
+    }).catch((e) => {
+      console.log(e);
+    });
+
+    this.get_data();
+  }
+
 
   render() {
     const l = this;
@@ -178,6 +256,18 @@ class Active extends Component {
     var div = document.createElement("div");
     div.innerHTML = html;
     var text = div.textContent || div.innerText || "";
+
+    var check;
+    if(info.hot == 'T'){
+      check = (
+        <input id={i}  className="form-control " type="text"/>
+      )
+    }else{
+      check = (
+        <input id={i}  className="form-control " type="checkbox"/>
+      )
+    }
+    var th =this;
 
     
 
@@ -209,8 +299,6 @@ class Active extends Component {
             margin:'0px',
             padding:'0px'
           }}>
-            
-
             <Table
               style={{
               background: '#FFFFFF',
@@ -222,20 +310,30 @@ class Active extends Component {
               <thead>
                 <tr style={{width:'100%'}}>
                   <th style={{width:'5%'}}>#</th>
-                  <th style={{width:'50%'}}>標題</th>
-                  <th style={{width:'1000px'}}>地點</th>
+                  <th style={{width:'30%'}}>標題</th>
+                  <th style={{width:'800px'}}>單位</th>
+                  <th style={{width:'3%'}}></th>
+                  <th style={{width:'3%'}}><Button style={{width:'100%'}} onClick={this.hito} bsStyle="warning">設為主打</Button></th>
                 </tr>
               </thead>
               <tbody>
                 {this.state.data.map(function (object, i) {
                     return (
-                      <tr key={i} onClick={() => l.detail(object.active_id)}>
-                      {/* {JSON.stringify(object)} */}
-                      <td style={{width:'5%'}}>{object.active_id}</td>
-                      <td style={{width:'50%'}}>{(object.active_name)}</td>
-                      <td style={{width:'15%'}}>{(object.depart)}</td>
-                      {/* <td><img style={{width:'100px'}} src={(object.active_pic)}/></td> */}
-
+                      <tr key={i} >
+                        <td style={{width:'5%'}}>{object.active_id}</td>
+                        <td style={{width:'50%'}}>{(object.active_name)}</td>
+                        <td style={{width:'15%'}}>{(object.depart)}</td>
+                        <td style={{width:'5%'}}><Button style={{width:'100%'}} onClick={() => l.detail(object.active_id)}>Detail</Button></td>
+                        <td style={{width:'3%'}}>
+                          {object.hot == "T" ? 
+                            <div>
+                              <Button onClick={() => l.cancel_hito(object.active_id)} style={{width:'100%'}} bsStyle="danger">取消</Button>
+                              <input id={i}   checked={true}  className="form-control " type="hidden"/> 
+                            </div>
+                          :
+                            <input id={i}   className="form-control input-sm" type="checkbox" />  
+                          }
+                        </td>
                       </tr>
                     );
                   })}
@@ -248,15 +346,66 @@ class Active extends Component {
             }}>
 
               <ListGroup fill>
-                <ListGroupItem  active>{(this.state.detail_data[0].active_name)}<Button  onClick={this.all}>BACK</Button></ListGroupItem>
-                <ListGroupItem >地點:{(this.state.detail_data[0].location)}</ListGroupItem >
-                <ListGroupItem >開始時間: {(this.state.detail_data[0].active_start)}</ListGroupItem >
-                <ListGroupItem >開始時間: {(this.state.detail_data[0].active_ending)}</ListGroupItem >
-                <ListGroupItem >承辦單位: {(this.state.detail_data[0].depart)}</ListGroupItem >
-                <ListGroupItem >演出者: {(this.state.detail_data[0].active_performer)}</ListGroupItem >
-                <ListGroupItem >詳細資訊: {(this.state.detail_data[0].active_performer)}</ListGroupItem >
-                <ListGroupItem ><div>{this.state.detail_data[0].active_info}</div></ListGroupItem >
-                <ListGroupItem ><div><img style={{width:'25%'}} src={(this.state.detail_data[0].active_pic)}/></div></ListGroupItem >
+              <ListGroupItem><Button onClick={this.all}><img src="img/icons8-long-arrow-left-50.png" style={{width:'40px'}}/></Button></ListGroupItem>
+                <ListGroupItem  active>{(this.state.detail_data[0].active_name)}</ListGroupItem>
+
+                <ListGroupItem >
+                  <label>地點:</label>
+                  <div className="input-group">
+                  <input id="insert_location" className="form-control" type="text" placeholder={(this.state.detail_data[0].location)}/>
+                  <div className="input-group-btn">
+                    <button onClick={()=>th.update_detail('location', 'insert_location' , this.state.detail_data[0].active_id)} className="btn btn-default" type="submit">確認更改</button>
+                  </div>
+                  </div>
+                </ListGroupItem >
+
+                <ListGroupItem >
+                  <label>開始時間: </label>
+                  <div className="input-group">
+                  <input id="insert_start"  className="form-control" type="date" placeholder={(this.state.detail_data[0].active_start)}/>
+                  <div className="input-group-btn">
+                    <button onClick={()=>th.update_detail('active_start', 'insert_start' , this.state.detail_data[0].active_id)} className="btn btn-default" type="submit">確認更改</button>
+                  </div>
+                  </div>
+                </ListGroupItem >
+
+                <ListGroupItem >
+                  <label>結束時間: </label>
+                  <div className="input-group">
+                  <input id="insert_end"  className="form-control" type="date" placeholder={(this.state.detail_data[0].active_ending)}/>
+                  <div className="input-group-btn">
+                    <button onClick={()=>th.update_detail('active_end', 'insert_end' , this.state.detail_data[0].active_id)} className="btn btn-default" type="submit">確認更改</button>
+                  </div>
+                  </div>
+                </ListGroupItem >
+
+                <ListGroupItem >
+                  <label>承辦單位: </label>
+                  <div className="input-group">
+                  <input id="insert_depart"  className="form-control" type="text" placeholder={(this.state.detail_data[0].depart)}/>
+                  <div className="input-group-btn">
+                    <button onClick={()=>th.update_detail('depart', 'insert_depart' , this.state.detail_data[0].active_id)} className="btn btn-default" type="submit">確認更改</button>
+                  </div>
+                  </div>
+                </ListGroupItem >
+
+                <ListGroupItem >
+                  <label>演出者: </label>
+                  <div className="input-group">
+                  <input id="insert_performers"  className="form-control" type="text" placeholder={(this.state.detail_data[0].active_performer)}/>
+                  <div className="input-group-btn">
+                    <button onClick={()=>th.update_detail('active_performer', 'insert_performers' , this.state.detail_data[0].active_id)} className="btn btn-default" type="submit">確認更改</button>
+                  </div>
+                  </div>
+                </ListGroupItem >
+
+                <ListGroupItem >
+                  <Grid style={{width:'100%'}}>
+                    <Col xs={6} md={6}><div><textarea className="form-control" style={{height:'500px'}} value={this.state.detail_data[0].active_info}/></div></Col>
+                    <Col xs={6} md={6}><div><img style={{width:'50%'}} src={(this.state.detail_data[0].active_pic)}/></div></Col>
+                  </Grid>
+                </ListGroupItem >
+                <ListGroupItem ></ListGroupItem >
                 
                 
                 

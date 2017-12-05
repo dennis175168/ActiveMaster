@@ -1,7 +1,12 @@
 // INSTRUCTIONS: In order to get Hot Reload started, go to: localhost:3001/webpack-dev-server
 // localhost:3000 is still reserved for ExpressJS (set up for production)s
-
+// const Router = require('koa-router');
+// const router = new Router();
 'use strict'
+
+var multer = require('koa-multer');
+const upload = multer({ dest: 'uploads/' });
+
 var koa = require('koa'),
 	router = require('koa-router')(),
 	serve = require('koa-static'),
@@ -21,7 +26,6 @@ app.use(function *(){
 	this.set('Access-Control-Allow-Origin', '*')
 })
 
-// Router
 router
 	.get('/api', function*(){
 		this.body = yield render(__dirname + '/public/index2.html')
@@ -29,11 +33,31 @@ router
 	.get('/panda', function*(){
 		this.body = yield render(__dirname + '/public/index.html')
 	})
-	.get('/aa', function*(){
-		this.body = 'aa';
+	.post('/upload-single', upload.single('filename'), function(req,res,next){ 
+		// var file=req.file; 
+		// // console.log("名稱︰%s",file.originalname); 
+		// // console.log("mime︰%s",file.mimetype); 
+		// //以下代碼得到檔案後綴 name=file.originalname; 
+		// nameArray=name.split(''); 
+		// var nameMime=[]; 
+		// l=nameArray.pop(); 
+		// nameMime.unshift(l); 
+		// while(nameArray.length!=0&&l!='.'){ 
+		// 	l=nameArray.pop(); nameMime.unshift(l); 
+		// } 
+		// //Mime是檔案的後綴 Mime=nameMime.join(''); 
+		// console.log(Mime); res.send("done"); 
+		// //重命名檔案 加上檔案後綴 
+		// fs.renameSync('./upload/'+file.filename,'./upload/'+file.filename+Mime); 
+		console.log(123);
 	})
 
-app.use(router.routes())
+app
+.use(router.routes())
+// .use(router.allowedMethods())
+// .listen(3000, ()=> console.log('port:'+3000));
+
+
 
 // SERVER
 app.listen(3000, function(){
