@@ -95,7 +95,7 @@ class Header extends Component {
 
             <div style={{display: this.state.show ? 'block' : 'none' }} >
             <Well className="aa" style={{position:'fixed',top:'50px',width:'10%',float:'left',marginTop:'30ox', margin:'0px',padding:'0px', justifyContent: 'center', backgroundColor:'#2A3542', height:height}}>
-                <Image src="img/1024px-CYCU.svg.png" style={{width:'50%', margin:'30px', marginLeft:'25%', marginRight:'25%'}}/> 
+                <Image src="img/logo.png" style={{width:'100%'}}/> 
                 <h4 style={{color:'white',marginRight:'20px', marginLeft:'20px'}}>Mr. Event</h4>
                     { log == 1 ? 
                         <Nav style={{paddingTop:"20px"}}>

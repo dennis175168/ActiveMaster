@@ -73,7 +73,7 @@ class Beacon extends Component {
 
     get_beacon() {
         const data = new FormData();
-        data.append('sql', 'SELECT * FROM beacon ');
+        data.append('sql', 'SELECT * FROM beacon WHERE beacon_num NOT IN (SELECT beacon_num FROM beaconwithlocation)');
 
         fetch(SqlApi_url, {
         method: 'post',
@@ -142,6 +142,7 @@ class Beacon extends Component {
         .then((res) => {
             //this.setState({data: res});
             this.get_beacon_with_location();
+            this.get_beacon();
         }).catch((e)=>{
           console.log(e);
         });

@@ -142,7 +142,7 @@ class Account extends Component {
                                                     <label for="usr">連絡電話 :{object.phone}</label>
                                                 </div>
                                                 </ListGroupItem>
-                                                <ListGroupItem><Button bsStyle="danger" style={{width:'100%'}}>delete</Button></ListGroupItem>
+                                                <ListGroupItem><Button bsStyle="danger" style={{width:'100%'}} disabled>delete</Button></ListGroupItem>
                                             </ListGroup>
                                         </Panel>
                                         </Col>
@@ -160,67 +160,96 @@ class Account extends Component {
                     <ListGroup fill>
                         <ListGroup>
                             <ListGroupItem>
-                            <div className="form-group">
-                                <label style={{width:'10%'}}>輸入學生學號: </label>
-                                <input type="text"  className="form-control" id="insert_stu_num"/>
-                            </div>
-                            <Button >查詢</Button>
                             </ListGroupItem>
                         </ListGroup>
                     </ListGroup>
                 </Panel>
 
-                <Panel fill collapsible defaultExpanded ={false} header="較低權限" bsStyle="success">
-                    <ListGroup fill>
-                        <ListGroup>
-                            <ListGroupItem>
-                            <div className="form-group">
-                                <label style={{width:'10%'}}>輸入學生學號: </label>
-                                <input type="text"  className="form-control" id="insert_stu_num"/>
-                            </div>
-                            <Button >查詢</Button>
-                            </ListGroupItem>
-                        </ListGroup>
-                    </ListGroup>
-                </Panel>
 
                 <Panel fill collapsible defaultExpanded ={false} header="新增人員">
                     <ListGroup fill>
-                        <ListGroup>
-                            <ListGroupItem>
-                            <div className="form-group">
-                                <label style={{width:'10%'}}>信箱: </label>
-                                <input type="mail"  className="form-control" id="insert_mail"/>
-                            </div>
-                            <div className="form-group">
-                                <label style={{width:'10%'}}>管理人: </label>
-                                <input type="text"  className="form-control" id="insert_name"/>
-                            </div>
-                            <div className="form-group">
-                                <label style={{width:'10%'}}>管理人電話: </label>
-                                <input type="text"  className="form-control" id="insert_phone"/>
-                            </div>
-                            <div className="form-group">
-                                <label style={{width:'10%'}}>帳號: </label>
-                                <input type="text"  className="form-control" id="insert_active_name"/>
-                            </div>
-                            <div className="form-group">
-                                <label style={{width:'10%'}}>密碼: </label>
-                                <input type="password"  className="form-control" id="insert_pwd"/>
-                            </div>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                            <div className="form-group">
-                                <label for="sel1">Select list:</label>
-                                <select className="form-control" id="insert_level">
-                                <option value="1">較高</option>
-                                <option value="2">一般</option>
-                                <option value="3">較低</option>
-                                </select>
-                            </div>
-                            <Button onClick={this.insert_admin}>確認新增</Button>
-                            </ListGroupItem>
-                        </ListGroup>
+                    <Grid style={{width:'100%'}}>
+
+                    <ListGroupItem>
+                    <Col xs={6} md={6}>
+                        <div className="form-group">
+                            <label >信箱: </label>
+                            <input type="mail"  className="form-control" id="insert_mail"/>
+                        </div>
+                    </Col>
+
+                    <Col xs={6} md={6}>
+                    <div className="form-group">
+                        <label >管理人: </label>
+                        <input type="text"  className="form-control" id="insert_name"/>
+                    </div>
+                    </Col>
+
+                    <Col xs={6} md={6}>
+                    <div className="form-group">
+                        <label >管理人電話: </label>
+                        <input type="text"  className="form-control" id="insert_phone"/>
+                    </div>
+                    </Col>
+
+                    <Col xs={6} md={6}>
+                    <div className="form-group">
+                        <label >帳號: </label>
+                        <input type="text"  className="form-control" id="insert_active_name"/>
+                    </div>
+                    </Col>
+
+                    <Col xs={6} md={6}>
+                    <div className="form-group">
+                        <label >密碼: </label>
+                        <input type="password"  className="form-control" id="insert_pwd"/>
+                    </div>
+                    <div className="form-group">
+                        <label >確認密碼: </label>
+                        <input type="password"  className="form-control" id="insert_pwd"/>
+                    </div>
+                
+                    </Col>
+                    <Col xs={6} md={6}>
+                    <div className="form-group">
+                    <label >選擇管理內容: </label>
+                    <br/>
+                    <ListGroupItem>
+                    <label className="checkbox-inline"><input type="checkbox" value=""/>活動管理</label>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                    <label className="checkbox-inline"><input type="checkbox" value=""/>基點管理</label>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                    <label className="checkbox-inline"><input type="checkbox" value=""/>通識認證</label>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                    <label className="checkbox-inline"><input type="checkbox" value=""/>網站管理</label>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                    <label className="checkbox-inline"><input type="checkbox" value=""/>系統圖片</label>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                    <label className="checkbox-inline"><input type="checkbox" value=""/>帳號管理</label>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                    <label className="checkbox-inline"><input type="checkbox" value=""/>Beacon Device</label>
+                    </ListGroupItem>
+                        
+                        
+                        
+                        
+                        
+                        </div>
+                    </Col>
+
+                    <Col xs={6} md={12}>
+                        <Button onClick={this.insert_admin}>確認新增</Button>
+                    </Col>
+                    </ListGroupItem>
+
+                    
+                    </Grid>
                     </ListGroup>
                 </Panel>
                    

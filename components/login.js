@@ -47,7 +47,9 @@ class Login extends Component {
             this.setState({user: res});
             var check = passwordHash.verify(pwd , res[0].admin_pwd);
             if(res.length>0 && check == true){
+                //alert(JSON.stringify(res[0].admin_id));
                 localStorage.setItem("status", '1');
+                localStorage.setItem("admin_id", res[0].admin_id);
                 window.location.replace('/#');
                 location.reload();
             }else{
@@ -59,7 +61,6 @@ class Login extends Component {
             console.log(e);
             alert(user);
         });
-        //
     }
 
     logout(){
