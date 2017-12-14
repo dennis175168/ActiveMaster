@@ -82,15 +82,15 @@ class Login extends Component {
       return (
          <div>
             <h2>Login</h2>
-            <div className="form-group">
+            <div className="form-group" style={{width:'20%'}}>
                 <label for="usr">username:</label>
                 <input type="text" className="form-control" id="usr"/>
             </div>
             <div className="form-group">
                 <label for="usr">password:</label>
-                <input type="password" className="form-control" id="pwd"/>
+                <input type="password" className="form-control" id="pwd" style={{width:'20%'}}/>
             </div>
-            <Button onClick={this.check_members}>login</Button>
+            <Button onClick={this.check_members}>Login</Button>
              {/* <Button onClick={this.hash}>123</Button>  */}
             {/* <a href="#/login"><Button onClick={this.logout}>logout</Button></a> */}
 

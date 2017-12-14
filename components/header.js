@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom'
 import { Button, Table, Well, ButtonGroup, Glyphicon, Image, Nav, NavItem, Row, Col, Navbar,  MenuItem,  NavDropdown} from 'react-bootstrap';
 import decode from 'jwt-decode';
 import session_status from '../config';
+import {SqlApi_url} from '../config';
 
 import Login from './login';
 import Home from './home';
@@ -28,11 +29,34 @@ class Header extends Component {
         show: true,
         wid: '90%',
         bt_hover:'#FFFFFF',
-        bt_hover_m:'10%'
+        bt_hover_m:'10%',
+        admin:[{
+            admin_id:''
+        }]
     };
     this.aa = this.aa.bind(this); //傳遞子物件
     this.b = this.b.bind(this);
     this.b1 = this.b1.bind(this);
+  }
+
+  componentWillMount() {
+    this.get_admin();
+}
+
+  get_admin(){
+    const admin_id = localStorage.getItem('admin_id');
+    //alert(admin_id);
+    const data = new FormData();
+    data.append('sql', 'select * from admin where admin_id = '+admin_id);
+
+    fetch(SqlApi_url, {
+    method: 'post',
+    body: data
+    }).then((res) => {
+    return res.json();
+    }).then((res) => {
+    this.setState({admin: res});
+    });
   }
 
 
@@ -67,6 +91,41 @@ class Header extends Component {
        const log = localStorage.getItem('status');
        const bt_hover_m = this.state.bt_hover_m;
        const height = window.screen.availHeight;
+       const permission = this.state.admin[0];
+        if(permission.permission_activity == "T"){
+            var activity =  <NavItem href="/#/active" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-th" /> &nbsp;&nbsp;活動管理</strong></NavItem>;
+            
+        }else{
+            var activity = '';
+        }
+
+        if(permission.permission_point == "T"){
+            var point = <NavItem href="/#/point" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-copyright-mark" /> &nbsp;&nbsp;積點管理</strong></NavItem>
+        }else{
+            var point = '';
+        }
+        if(permission.permission_proof == "T"){
+            var proof = <NavItem href="/#/proof" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-book" /> &nbsp;&nbsp;通識認證</strong></NavItem>
+        }else{
+            var proof = '';
+        }
+        if(permission.permission_web == "T"){
+            var web = <NavItem href="/#/webcontroll" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-pencil" /> &nbsp;&nbsp;網站管理</strong></NavItem>
+        }else{
+            var web = '';
+        }
+        if(permission.permission_account == "T"){
+            var account =  <NavItem href="/#/account" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-user" /> &nbsp;&nbsp;帳號管理</strong></NavItem>
+        }else{
+            var account = '';
+        }
+
+        if(permission.permission_beacon == "T"){
+            var beacon = <NavItem href="/#/beacon" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-record" /> &nbsp;&nbsp;Beacon Device</strong></NavItem>
+        }else{
+            var beacon = '';
+        }
+    
       return (
 
         <HashRouter>
@@ -99,23 +158,22 @@ class Header extends Component {
                 <h4 style={{color:'white',marginRight:'20px', marginLeft:'20px'}}>Mr. Event</h4>
                     { log == 1 ? 
                         <Nav style={{paddingTop:"20px"}}>
-                            <NavItem href="/" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-home" /> &nbsp;&nbsp;Home</strong></NavItem>
-                            <NavItem href="/#/active" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-th" /> &nbsp;&nbsp;活動管理</strong></NavItem>
+                            <NavItem href="/" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-home" /> &nbsp;&nbsp;Dashboard</strong></NavItem>
+                            {/* <NavItem href="/#/active" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-th" /> &nbsp;&nbsp;活動管理</strong></NavItem>
                             <NavItem href="/#/point" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="	glyphicon glyphicon-copyright-mark" /> &nbsp;&nbsp;積點管理</strong></NavItem>
                             <NavItem href="/#/proof" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-book" /> &nbsp;&nbsp;通識認證</strong></NavItem>
                             <NavItem href="/#/webcontroll" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-pencil" /> &nbsp;&nbsp;網站管理</strong></NavItem>
                             <NavItem href="/#/pictures" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-picture" /> &nbsp;&nbsp;系統圖片</strong></NavItem>
                             <NavItem href="/#/account" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-user" /> &nbsp;&nbsp;帳號管理</strong></NavItem>
-                            <NavItem href="/#/beacon" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-record" /> &nbsp;&nbsp;Beacon Device</strong></NavItem>
+                            <NavItem href="/#/beacon" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-record" /> &nbsp;&nbsp;Beacon Device</strong></NavItem> */}
+                            {activity}
+                            {point}
+                            {proof}
+                            {web}
+                            {account}
+                            {beacon}
+                            {/* <NavItem href="/#/pictures" onMouseEnter={this.b} onMouseOut={this.b1}><strong onMouseEnter={this.b} onMouseOut={this.b1} style={{color: this.state.bt_hover}}><Glyphicon glyph="glyphicon glyphicon-picture" /> &nbsp;&nbsp;系統圖片</strong></NavItem> */}
                             <Link to="/login"><Button bsStyle="danger" style={{width:'80%', margin:'10%'}} onClick={this.logout}>Log out{sessionStorage.getItem('status')}</Button></Link>
-                        
-
-                        {/* <Link to="/point"><Button style={{width:'100%'}}>積點管理</Button></Link>
-                        <Link to="/active"><Button style={{width:'100%'}}>活動管理</Button></Link>
-                        <Link to="/proof"><Button style={{width:'100%'}}>通識認證</Button></Link>
-                        <Link to="/account"><Button style={{width:'100%'}}>帳號管理</Button></Link>
-                        <Link to="/beacon"><Button style={{width:'100%'}}>Beacon Device</Button></Link>
-                        <Link to="/login"><Button bsStyle="danger" style={{width:'100%'}} onClick={this.logout}>Log out</Button></Link> */}
                         </Nav>
                         :
                         <Link  to="/login"><Button  bsStyle="success" style={{width:'100%', width:'80%', margin:'10%'}}>Login{sessionStorage.getItem('status')}</Button></Link>
@@ -142,7 +200,8 @@ class Header extends Component {
                     <Route path="/login" component={Login}/>
                     <Route path="/point" component={Point}/>
                     <Route path="/active" component={Active}/>
-                    <Route path="/proof/:id" component={Proof}/>
+                    <Route path="/proof" component={Proof}/>
+                    {/* <Route path="/proof/:id" component={Proof}/> */}
                     <Route path="/account" component={Account}/>
                     <Route path="/beacon" component={Beacon}/>
                     <Route path="/webcontroll" component={WebControll}/>

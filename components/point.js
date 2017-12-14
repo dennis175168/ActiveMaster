@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { HashRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom';
+import QrReader from 'react-qr-reader';
 import {
   Button,
   Table,
@@ -49,20 +50,31 @@ class Point extends Component {
           stu_point:'',
           gift_name:''
         }],
-        change: 'block',
+        student_of_gift_qrcode:[{
+          stu_name:'',
+          stu_point:'',
+          gift_name:''
+        }],
+        change: 'none',
         student: 'block',
-        gifts: 'block',
+        gifts: 'none',
+
+        delay: 300,
+        result: 'No result',
     };
     this.insert = this.insert.bind(this); //傳遞子物件
     this.get_data = this.get_data.bind(this);
     this.get_student = this.get_student.bind(this);
     this.get_student_gift = this.get_student_gift.bind(this);
+    this.get_student_gift_qrcode = this.get_student_gift_qrcode.bind(this);
 
     this.update = this.update.bind(this);
     this.show_change = this.show_change.bind(this);
     this.show_gifts = this.show_gifts.bind(this);
     this.show_student = this.show_student.bind(this);
     this.show_all = this.show_all.bind(this);
+
+    this.handleScan = this.handleScan.bind(this)
   }
 
 
@@ -107,6 +119,24 @@ class Point extends Component {
 
   get_student_gift(){
     var i = document.getElementById('insert_stu_num').value;
+    alert(i);
+    const data = new FormData();
+    data.append('sql','select * from student , gift_box ,gift where student.stu_id = gift_box.stu_id and gift.gift_id = gift_box.gift_id and stu_num ='+i)
+
+    fetch(SqlApi_url, {
+        method:'post',
+        body:data,
+    })
+    .then((res) => {
+        return res.json();
+    })
+    .then((res) => {
+        this.setState({student_of_gift: res});
+    });
+  }
+
+  get_student_gift_qrcode(){
+    var i = document.getElementById('qrcode_result').value;
     alert(i);
     const data = new FormData();
     data.append('sql','select * from student , gift_box ,gift where student.stu_id = gift_box.stu_id and gift.gift_id = gift_box.gift_id and stu_num ='+i)
@@ -213,6 +243,22 @@ class Point extends Component {
     }
   }
 
+  update_gift(i){
+    const new_price = document.getElementById(i).value;
+    if(new_price){
+      const sql = "UPDATE gift SET gift_coin = "+new_price+" WHERE gift_id ="+i;
+      var r = confirm("確定刪除"+new_price+sql);
+      if (r == true) {
+          this.update(sql);
+      } else {
+          alert('Cancel the update');
+      }
+    }else{
+      alert('請先輸入更改內容');
+    }
+    
+  }
+
   delete(i){
     alert('delete');
     var _id = i;
@@ -235,7 +281,18 @@ class Point extends Component {
     }).catch((e)=>{
       console.log(e);
     });
-}
+  }
+
+  handleScan(data){
+    if(data){
+      this.setState({
+        result: data,
+      })
+    }
+  }
+  handleError(err){
+    console.error(err)
+  }
 
 
    render() {
@@ -289,7 +346,7 @@ class Point extends Component {
                     return (
                       <tr>
                         <td>{object.stu_id}</td>
-                        <td>{object.stu_name}</td>
+                        <td>{object.stu_num}</td>
                         <td>{object.stu_point}</td>
                       </tr>  
                     );
@@ -335,10 +392,10 @@ class Point extends Component {
                         <ListGroup fill>
                           <ListGroupItem>
                           <div className="form-group">
-                              <label for="usr">點數:</label>
-                              <input type="text" value={object.gift_coin} className="form-control" id="usr"/>
+                              <label for="usr">點數: {object.gift_coin}</label>
+                              <input type="text"  placeholder={object.gift_coin} className="form-control" id={object.gift_id}/>
                           </div>
-                            <Button bsStyle="primary" style={{width:'40%',margin:'5%'}}>update</Button>
+                            <Button onClick={()=>l.update_gift(object.gift_id)} bsStyle="primary" style={{width:'40%',margin:'5%'}}>update</Button>
                             <Button onClick={()=>l.delete_gift(object.gift_id)} bsStyle="danger" style={{width:'40%' ,margin:'5%'}}>delete</Button>
                           </ListGroupItem>
                         </ListGroup>
@@ -377,11 +434,21 @@ class Point extends Component {
             <Panel fill collapsible defaultExpanded ={false} header="QRcode查詢">
               <ListGroup fill>
                     <ListGroupItem>
-                      <div className="form-group">
-                        <label style={{width:'10%'}}>輸入學生學號: </label>
-                        <input type="text"  className="form-control" id="usr"/>
-                      </div>
-                      <Button>查詢</Button>
+                      <QrReader
+                        delay={this.state.delay}
+                        onError={this.handleError}
+                        onScan={this.handleScan}
+                        style={{ width: '30%' , marginLeft:'35%',marginRight:'35%'}}
+                        />
+                      <ListGroupItem>
+                        <h3><label>學號: {this.state.result}</label></h3>
+                      </ListGroupItem>
+                      
+                      <input type="hidden" value={this.state.result} id="qrcode_result"/>
+                      <ListGroupItem>
+                        <Button onClick={this.get_student_gift_qrcode}>查詢</Button>
+                      </ListGroupItem>
+                      
                     </ListGroupItem>
               </ListGroup>
             </Panel>
