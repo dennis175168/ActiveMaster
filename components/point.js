@@ -121,7 +121,7 @@ class Point extends Component {
     var i = document.getElementById('insert_stu_num').value;
     alert(i);
     const data = new FormData();
-    data.append('sql','select * from student , gift_box ,gift where student.stu_id = gift_box.stu_id and gift.gift_id = gift_box.gift_id and stu_num ='+i)
+    data.append('sql','select * from student , gift_box ,gift where student.stu_id = gift_box.stu_id and gift.gift_id = gift_box.gift_id and student.stu_id = '+i)
 
     fetch(SqlApi_url, {
         method:'post',
@@ -139,7 +139,7 @@ class Point extends Component {
     var i = document.getElementById('qrcode_result').value;
     alert(i);
     const data = new FormData();
-    data.append('sql','select * from student , gift_box ,gift where student.stu_id = gift_box.stu_id and gift.gift_id = gift_box.gift_id and stu_num ='+i)
+    data.append('sql','select * from student , gift_box ,gift where student.stu_id = gift_box.stu_id and gift.gift_id = gift_box.gift_id and student.stu_id = '+i)
 
     fetch(SqlApi_url, {
         method:'post',
@@ -345,8 +345,8 @@ class Point extends Component {
                   {this.state.students.map(function(object, i){
                     return (
                       <tr>
-                        <td>{object.stu_id}</td>
                         <td>{object.stu_num}</td>
+                        <td>{object.stu_id}</td>
                         <td>{object.stu_point}</td>
                       </tr>  
                     );

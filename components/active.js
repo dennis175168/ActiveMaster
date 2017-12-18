@@ -313,7 +313,7 @@ class Active extends Component {
                   <th style={{width:'30%'}}>標題</th>
                   <th style={{width:'800px'}}>單位</th>
                   <th style={{width:'3%'}}></th>
-                  <th style={{width:'3%'}}><Button style={{width:'100%'}} onClick={this.hito} bsStyle="warning">設為主打</Button></th>
+                  <th style={{width:'3%'}}><Button style={{width:'100%'}} onClick={this.hito} bsStyle="warning">設為強打</Button></th>
                 </tr>
               </thead>
               <tbody>

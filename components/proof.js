@@ -31,10 +31,7 @@ class Proof extends Component {
 
     this.state = {
       proof: [
-        {
-          active_id: '123',
-          active_name: '456'
-        }
+        {}
       ]
     };
 
@@ -100,7 +97,7 @@ class Proof extends Component {
                       return (
                         <tr key={i} >
                           <td style={{width:'5%'}}>{object.proof_id}</td>
-                          <td style={{width:'15%'}}>{(object.stu_num)}</td>
+                          <td style={{width:'15%'}}>{(object.stu_id)}</td>
                           <td style={{width:'50%'}}>{(object.active_name)}</td>
                           
                         </tr>

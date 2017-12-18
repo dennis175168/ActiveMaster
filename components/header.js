@@ -13,7 +13,6 @@ import Active from './active';
 import Beacon from './beacon';
 import Proof from './proof';
 import Account from './account';
-import Auth from './Auth';
 import WebControll from './webcontroll';
 import Pictures from './pictures';
 import PictureControll from './picture_controll';
