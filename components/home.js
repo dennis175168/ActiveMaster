@@ -32,6 +32,7 @@ import BarActive from './chart/bar_active';
 import MyPie from './chart/pie';
 import MyProofRadar from './chart/radar';
 import MyArea from './chart/area';
+import Permission from './no_permussion';
 
 class Home extends Component {
   constructor(props) {
@@ -316,7 +317,7 @@ class Home extends Component {
             
             :
             
-            <h2>error</h2>
+            <Permission/>
             
           }
         </div>   

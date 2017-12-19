@@ -42,35 +42,20 @@ class Chart extends Component {
         
     };
     this.get_active_count = this.get_active_count.bind(this); //傳遞子物件
+    
     // this.get_data = this.get_data.bind(this);
   }
 
 
 
   componentWillMount(){
+      
     this.get_active_count();
   }
 
   get_active_count() {
+      console.log(123);
       var aaa = [];
-      var bbb = [];
-      for(var i=1 ; i<=5 ;i++){
-        const data = new FormData();
-        data.append('sql', 'SELECT COUNT(active_type) as count, type.active_type, type.active_type_id From active, type where active.active_type_id = type.active_type_id AND type.active_type_id ='+i );
-
-        fetch(SqlApi_url, {
-        method: 'post',
-        body: data
-        }).then((res) => {
-            return res.json();
-        }).then((res) => {
-            bbb.push(
-                res[0]
-            )
-        });
-      }
-      this.setState({active_count1: bbb});
-
       //分類1~5
       for(var i=1 ; i<=5 ;i++){
         const data = new FormData();
@@ -84,23 +69,6 @@ class Chart extends Component {
         }).then((res) => {
             return res.json();
         }).then((res) => {
-
-            // const data = new FormData();
-            // data.append('sql', 'SELECT COUNT(active_type) as count, type.active_type, type.active_type_id From active, type where active.active_type_id = type.active_type_id AND type.active_type_id ='+1 );
-    
-            // fetch(SqlApi_url, {
-            // method: 'post',
-            // body: data
-            // }).then((res1) => {
-            //     return res1.json();
-            // }).then((res1) => {
-            //     aaa.push(
-            //         //{favor:parseInt(res[0].favor),active_type:res[0].active_type,count:res1[0].count}
-            //         //res1[0]
-            //         i
-            //     )
-            // });
-            //console.log(q);
             aaa.push(
                 //{favor:res[0].favor,active_type:res[0].active_type}
                 res[0]
@@ -111,6 +79,8 @@ class Chart extends Component {
       
     
   }
+
+ 
    render() {
        var qq= [];
        qq["property"] = "456";
@@ -123,9 +93,10 @@ class Chart extends Component {
     
       return (
             <div>
+                {/* <Button ><Glyphicon glyph="glyphicon glyphicon-repeat" /></Button> */}
                  {/* {JSON.stringify(this.state.active_count)}  */}
                 {/* {JSON.stringify(this.state.active_count1)} */}
-                <BarChart width={window.screen.availWidth/3} height={400} data={data} >
+                <BarChart width={window.screen.availWidth/4} height={400} data={data} >
                     <XAxis dataKey="active_type"/>
                     <YAxis/>
                     {/* <CartesianGrid strokeDasharray="3 3"/> */}

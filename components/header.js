@@ -194,7 +194,8 @@ class Header extends Component {
 
             <div style={{marginLeft:bt_hover_m, marginTop:'50px',width:w,float:'left',padding:'30px',alignContent:'center'}}>   
           
-                <Switch>  
+                <Switch>
+                    
                     <Route exact path="/" component={Home}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/point" component={Point}/>

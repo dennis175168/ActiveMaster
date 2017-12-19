@@ -28,6 +28,7 @@ import {
 } from 'react-bootstrap';
 import {SqlApi_url} from '../config';
 import Pictures from './pictures';
+import Permission from './no_permussion';
 
 
 class Point extends Component {
@@ -296,6 +297,8 @@ class Point extends Component {
 
 
    render() {
+     
+    const log =localStorage.getItem('status');
      var l =this;
      //this.aa();
      const info = this.state.data;
@@ -313,10 +316,9 @@ class Point extends Component {
       return (
         
          <div>
+           { log == 1  ?
+            <div>
            <Well>
-           
-              
-          
            <div >
               <ButtonGroup  style={{width:'100%'}}>
                 <Button onClick={ this.show_all} bsStyle="success" >ALL</Button>
@@ -492,6 +494,13 @@ class Point extends Component {
             </Panel>
             </Panel>
             </Well>
+            </div>
+            
+            :
+            
+            <Permission/>
+            
+          }
             
          </div>
       );

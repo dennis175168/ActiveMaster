@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {SqlApi_url} from '../config';
 import PicturesBanner from './pictures_banner';
+import Permission from './no_permussion';
 import {
     Button,
     Table,
@@ -132,6 +133,8 @@ class PictureControll extends Component {
        var th =this;
       return (
          <div>
+            { log == 1  ?
+            <div>
             <Well>
                 <Panel header={"Banner圖片"}>
                     <Grid>
@@ -173,6 +176,13 @@ class PictureControll extends Component {
                     </Grid>
                 </Panel>
             </Well>
+            </div>
+
+            :
+            
+            <Permission/>
+            
+          }
          </div>
       );
    }

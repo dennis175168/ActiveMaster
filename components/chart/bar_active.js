@@ -87,7 +87,7 @@ class BarActive extends Component {
             <div>
                  {/* {JSON.stringify(this.state.active_count)}  */}
                 {/* {JSON.stringify(this.state.active_count1)} */}
-                <BarChart width={window.screen.availWidth/3} height={400} data={data} >
+                <BarChart width={window.screen.availWidth/4} height={400} data={data} >
                     <XAxis dataKey="active_type"/>
                     <YAxis/>
                     <Tooltip/>

@@ -27,6 +27,7 @@ import {
     Grid,
     Carousel
   } from 'react-bootstrap';
+import Permission from './no_permussion';
 
 class WebControll extends Component {
 
@@ -92,10 +93,12 @@ class WebControll extends Component {
    render() {
 
     var th = this;
+    const log =localStorage.getItem('status');
 
       return (
          <div>
-
+            { log == 1  ?
+            <div>
             <Well>
             <Carousel>
                 {this.state.endside_picture.map(function(object, i){
@@ -163,6 +166,13 @@ class WebControll extends Component {
 
                 </Panel>
             </Well>
+            </div>
+            
+            :
+            
+            <Permission/>
+            
+          }
             
          </div>
       );

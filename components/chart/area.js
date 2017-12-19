@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import {SqlApi_url} from '../../config';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Brush} from 'recharts';
 import {
   Button,
   Table,
@@ -86,12 +86,13 @@ class MyArea extends Component {
             <div>
                   {/* {JSON.stringify(this.state.active_count)}   */}
                 {/* {JSON.stringify(this.state.active_count1)} */}
-                <AreaChart width={1300} height={400} data={data}
+                <AreaChart width={window.screen.availWidth-400} height={400} data={data}
                         margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-                    <XAxis dataKey="count_date"/>
+                    <XAxis dataKey="count_date" type="category" orientation="bottom" padding={{ left: 20, right: 20 }} />
                     <YAxis/>
                     <Tooltip/>
-                    <Area type='monotone' dataKey='counted_leads' stroke='#8884d8' fill='#8884d8' />
+                    <Brush />
+                    <Area type='monotone' dataKey='counted_leads' stroke='#042a3a' fill='#176382'  />
                 </AreaChart>
             </div>
       );

@@ -24,6 +24,7 @@ import {
     Grid
   } from 'react-bootstrap';
 import {SqlApi_url} from '../config';
+import Permission from './no_permussion';
 
 class Beacon extends Component {
     constructor(props) {
@@ -203,9 +204,12 @@ class Beacon extends Component {
 
    render() {
        var l =this;
+       const log =localStorage.getItem('status');
       return (
 
         
+        <div>
+        { log == 1  ?
         <div>
         <Grid style={{width:'100%'}}>
         <Row className="show-grid">
@@ -318,6 +322,13 @@ class Beacon extends Component {
 
          </Row>
          </Grid>
+         </div>
+            
+            :
+            
+            <Permission/>
+            
+          }
          </div>   
          
       );

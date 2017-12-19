@@ -25,6 +25,7 @@ import {
 } from 'react-bootstrap';
 import {SqlApi_url} from '../config';
 import Proof from './proof';
+import Permission from './no_permussion';
 
 class Active extends Component {
   constructor(props) {
@@ -33,8 +34,8 @@ class Active extends Component {
     this.state = {
       data: [
         {
-          active_id: '123',
-          active_name: '456'
+          active_id: '',
+          active_name: '目前沒有活動'
         }
       ],
       detail_data: [
@@ -47,8 +48,7 @@ class Active extends Component {
       showdata: 'block'
     };
 
-    this.insert = this.insert.bind(this); //傳遞子物件
-    this.get_data = this.get_data.bind(this);
+    this.get_data = this.get_data.bind(this);//傳遞子物件
     this.detail = this.detail.bind(this);
     this.all = this.all.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -58,13 +58,12 @@ class Active extends Component {
   }
 
   componentWillMount() {
-    //alert('123');
     this.get_data();
   }
 
   get_data() {
     const data = new FormData();
-    data.append('sql', 'select * from active');
+    data.append('sql', 'select * from active order by active_start ');
 
     fetch(SqlApi_url, {
       method: 'post',
@@ -95,27 +94,7 @@ class Active extends Component {
     });
   }
 
-  insert() {
-    const data = new FormData();
-    data.append('sql', "INSERT INTO member (mb_name , mb_mail ) VALUES ('allen', 'allen.chen@msseed.idv." + "tw')");
-
-    fetch('http://127.0.0.1/ajax/venus.php', {
-      method: 'post',
-      body: data
-    }).then((res) => {
-      //return res.json();
-    }).catch((e) => {
-      console.log(e);
-    }).then((res) => {
-      //this.setState({data: res});
-    }).catch((e) => {
-      console.log(e);
-    });
-
-    this.get_data();
-    //alert(123);
-
-  }
+  
 
   handleChange(event){
     //this.setState({value: event.target.value});
@@ -230,6 +209,7 @@ class Active extends Component {
 
   render() {
     const l = this;
+    const log =localStorage.getItem('status');
 
     const info = this.state.data;
     const row = [];
@@ -274,6 +254,8 @@ class Active extends Component {
     return (
 
       <div>
+      { log == 1  ?
+      <div>
         <Well >
         <Row className="show-grid">
         <Col xs={12} md={8} >
@@ -287,7 +269,7 @@ class Active extends Component {
           </ButtonGroup>
         </Col>
         <Col xs={6} md={4} >
-          <input type="text" className="form-control" placeholder="search" value={this.state.value} onChange={this.handleChange}/>
+          <input type="text" className="form-control" placeholder="標題 search" value={this.state.value} onChange={this.handleChange}/>
           
         </Col>  
         </Row>
@@ -310,6 +292,7 @@ class Active extends Component {
               <thead>
                 <tr style={{width:'100%'}}>
                   <th style={{width:'5%'}}>#</th>
+                  <th style={{width:'10%'}}>開始時間</th>
                   <th style={{width:'30%'}}>標題</th>
                   <th style={{width:'800px'}}>單位</th>
                   <th style={{width:'3%'}}></th>
@@ -321,6 +304,7 @@ class Active extends Component {
                     return (
                       <tr key={i} >
                         <td style={{width:'5%'}}>{object.active_id}</td>
+                        <td style={{width:'10%'}}>{(object.active_start)}</td>
                         <td style={{width:'50%'}}>{(object.active_name)}</td>
                         <td style={{width:'15%'}}>{(object.depart)}</td>
                         <td style={{width:'5%'}}><Button style={{width:'100%'}} onClick={() => l.detail(object.active_id)}>Detail</Button></td>
@@ -423,7 +407,13 @@ class Active extends Component {
             </div>
           </Panel>
         </Well>
-        {/* <Button onClick={this.insert}>insert</Button> */}
+        </div>
+            
+            :
+            
+            <Permission/>
+            
+          }
 
         
       </div>

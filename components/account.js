@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ImagesUploader from 'react-images-uploader';
 import {SqlApi_url} from '../config';
 var passwordHash = require('password-hash');
+import Permission from './no_permussion';
 import {
     Button,
     Table,
@@ -172,12 +173,17 @@ class Account extends Component {
     
 
    render() {
+
+    const log =localStorage.getItem('status');
     if (typeof window === 'undefined') {
         options.userAgent = this.props.userAgentString;
       }
       return (
+
+        
          <div>
-            <Well>
+            { log == 1  ?
+                <Well>
                 <Panel  header="人員管理" bsStyle="primary">
                 
                 
@@ -385,6 +391,12 @@ class Account extends Component {
                 </Panel>
                 </Panel>
             </Well>
+                : 
+                <Permission/>
+            }
+
+
+            
          </div>
       );
    }
