@@ -55,6 +55,9 @@ class Home extends Component {
         active:[{
           active_id:'123',
         }],
+        student:[{
+          active_id:''
+        }]
         
     };
     this.get_admin = this.get_admin.bind(this); //傳遞子物件
@@ -68,6 +71,7 @@ class Home extends Component {
     this.get_beacon();
     this.get_endside_picture();
     this.get_active();
+    this.get_student();
   }
 
 
@@ -143,6 +147,19 @@ class Home extends Component {
       this.setState({active: res});
     });
   }
+  get_student() {
+    const data = new FormData();
+    data.append('sql', 'select * from student');
+
+    fetch(SqlApi_url, {
+      method: 'post',
+      body: data
+    }).then((res) => {
+      return res.json();
+    }).then((res) => {
+      this.setState({student: res});
+    });
+  }
 
  
 
@@ -205,14 +222,14 @@ class Home extends Component {
                 <Well>
                   <table style={{width:'100%'}}>
                     <tr>
-                      <td style={{width:'60%'}}><h3>管理員數量</h3></td>
-                      <td style={{width:'40%'}}><h1 style={{marginLeft:'10px'}}><strong>2</strong></h1></td>
+                      <td style={{width:'60%'}}><h3>使用系統學生數量</h3></td>
+                      <td style={{width:'40%'}}><h1 style={{marginLeft:'10px'}}><strong>{JSON.stringify(this.state.student.length)}</strong></h1></td>
                     </tr>
                   </table> 
                 </Well>
                 </Col>
 
-                <Col xs={6} md={3}>
+                {/* <Col xs={6} md={3}>
                 <Well>
                   <table style={{width:'100%'}}>
                     <tr>
@@ -221,7 +238,7 @@ class Home extends Component {
                     </tr>
                   </table> 
                 </Well>
-                </Col>
+                </Col> */}
 
                 <Col xs={6} md={3}>
                 <Well>

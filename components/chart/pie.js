@@ -108,7 +108,7 @@ class MyPie extends Component {
                 {/* {JSON.stringify(data03)}  */}
                 
                 <PieChart width={window.screen.availWidth/10} height={300} style={{marginLeft:'14%',marginRright:'14%'}}>
-                    <Pie dataKey="favor" isAnimationActive={false} data={data03} outerRadius={80} innerRadius={40} fill="#8884d8" label>
+                    <Pie dataKey="favor" isAnimationActive={false} data={data03} outerRadius={50} innerRadius={20} fill="#8884d8" label>
                     {data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]}/>)}
                     </Pie>
                     {/* <Pie dataKey="favor" data={data} cx={300} cy={100} innerRadius={40} outerRadius={80} fill="#82ca9d" label/> */}

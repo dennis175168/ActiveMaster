@@ -86,7 +86,7 @@ class MyArea extends Component {
             <div>
                   {/* {JSON.stringify(this.state.active_count)}   */}
                 {/* {JSON.stringify(this.state.active_count1)} */}
-                <AreaChart width={window.screen.availWidth-400} height={400} data={data}
+                <AreaChart width={window.screen.availWidth/2} height={400} data={data}
                         margin={{top: 10, right: 30, left: 0, bottom: 0}}>
                     <XAxis dataKey="count_date" type="category" orientation="bottom" padding={{ left: 20, right: 20 }} />
                     <YAxis/>

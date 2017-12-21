@@ -103,7 +103,7 @@ class Pictures extends Component {
     })
     .then((res) => {
         //this.setState({data: res});
-        window.location.href = "http://127.0.0.1:3001/#/point";
+        //window.location.href = "http://127.0.0.1:3001/#/point";
     })
     .catch((e)=>{
       console.log(e);
